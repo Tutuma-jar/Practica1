@@ -122,6 +122,7 @@ function App() {
           onQty={changeQty}
           onRemove={removeFromCart}
           onCheckout={checkout}
+          onClose={() => setShowCart(false)}
         />
       )}
     </div>

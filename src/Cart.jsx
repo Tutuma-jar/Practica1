@@ -1,7 +1,12 @@
-function Cart({ items, total, onQty, onRemove, onCheckout }) {
+function Cart({ items, total, onQty, onRemove, onCheckout, onClose }) {
   return (
     <aside className="cart">
-      <h2>Tu carrito</h2>
+      <div className="cart-header">
+        <h2>Tu carrito</h2>
+        <button type="button" onClick={onClose}>
+          Cerrar
+        </button>
+      </div>
 
       {items.length === 0 && <p>El carrito está vacío.</p>}
 
