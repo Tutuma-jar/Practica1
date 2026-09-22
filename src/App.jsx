@@ -16,13 +16,15 @@ function App() {
   const [showCart, setShowCart] = useState(false)
 
   useEffect(() => {
+    const controller = new AbortController()
+
     setLoading(true)
     setError('')
     const url = search
       ? `${API_URL}/search?q=${encodeURIComponent(search)}`
       : `${API_URL}?limit=30`
 
-    fetch(url)
+    fetch(url, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`Error HTTP ${res.status}`)
         return res.json()
@@ -30,13 +32,17 @@ function App() {
       .then((data) => {
         setProducts(data.products)
       })
-      .catch(() => {
+      .catch((requestError) => {
+        if (requestError.name === 'AbortError') return
+
         setProducts([])
         setError('No se pudieron cargar los productos. Inténtalo de nuevo.')
       })
       .finally(() => {
-        setLoading(false)
+        if (!controller.signal.aborted) setLoading(false)
       })
+
+    return () => controller.abort()
   }, [search])
 
   function addToCart(product) {
