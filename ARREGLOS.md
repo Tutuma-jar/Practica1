@@ -64,6 +64,10 @@
 
     La actualización de cantidades ahora elimina la línea del carrito cuando la cantidad llega a cero.
 
+17. **Al comprar productos no se actualizaba el stock mostrado**
+
+    El stock de la tarjeta no reflejaba las unidades agregadas al carrito ni las compradas. Ahora el stock visible se calcula restando las unidades reservadas en el carrito: baja al agregar, sube al quitar, y al pagar se descuenta definitivamente del catálogo. El botón se deshabilita y muestra "Sin stock" cuando no quedan unidades.
+
 # Arreglos pendientes
 
 1. **El filtro local elimina resultados válidos de la API**

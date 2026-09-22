@@ -97,8 +97,21 @@ function App() {
     setCart((currentCart) => currentCart.filter((item) => item.id !== id))
   }
 
+  function remainingStock(item) {
+    const current = products.find((p) => p.id === item.id)
+    const quantity = cart.find((c) => c.id === item.id)?.quantity ?? 0
+    const stock = current ? current.stock : item.stock
+    return Math.max(0, stock - quantity)
+  }
+
   function checkout() {
     alert(`Compra realizada. Total: $${total.toFixed(2)}`)
+    setProducts((currentProducts) =>
+      currentProducts.map((p) => {
+        const bought = cart.find((item) => item.id === p.id)?.quantity ?? 0
+        return bought > 0 ? { ...p, stock: Math.max(0, p.stock - bought) } : p
+      })
+    )
     setCart([])
   }
 
@@ -154,7 +167,7 @@ function App() {
             <ProductCard
               key={p.id}
               product={p}
-              cartQuantity={cart.find((item) => item.id === p.id)?.quantity ?? 0}
+              stock={remainingStock(p)}
               onAdd={() => addToCart(p)}
             />
           ))}
@@ -163,7 +176,7 @@ function App() {
 
       {showCart && (
         <Cart
-          items={cart}
+          items={cart.map((item) => ({ ...item, remaining: remainingStock(item) }))}
           total={total}
           onQty={changeQty}
           onRemove={removeFromCart}
