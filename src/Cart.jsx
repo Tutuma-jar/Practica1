@@ -6,24 +6,24 @@ function Cart({ items, total, onQty, onRemove, onCheckout }) {
       {items.length === 0 && <p>El carrito está vacío.</p>}
 
       <ul className="cart-list">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <li key={item.id} className="cart-item">
             <img src={item.thumbnail} alt={item.title} width="60" />
             <span className="cart-title">{item.title}</span>
             <span>${item.price.toFixed(2)}</span>
             <div className="qty">
-              <button aria-label="Quitar uno" onClick={() => onQty(index, -1)}>
+              <button aria-label="Quitar uno" onClick={() => onQty(item.id, -1)}>
                 -
               </button>
               <span>{item.quantity}</span>
-              <button aria-label="Agregar uno" onClick={() => onQty(index, 1)}>
+              <button aria-label="Agregar uno" onClick={() => onQty(item.id, 1)}>
                 +
               </button>
             </div>
             <button
               className="remove"
               aria-label={`Eliminar ${item.title}`}
-              onClick={() => onRemove(item)}
+              onClick={() => onRemove(item.id)}
             >
               x
             </button>

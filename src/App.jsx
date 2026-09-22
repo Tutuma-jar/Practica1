@@ -33,15 +33,18 @@ function App() {
     setCart(cart)
   }
 
-  function changeQty(index, delta) {
-    const updated = cart.map((item, i) =>
-      i === index ? { ...item, quantity: item.quantity + delta } : item
+  function changeQty(id, delta) {
+    setCart((currentCart) =>
+      currentCart.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
     )
-    setCart(updated)
   }
 
-  function removeFromCart(item) {
-    setCart(cart.filter((c) => c.category !== item.category))
+  function removeFromCart(id) {
+    setCart((currentCart) => currentCart.filter((item) => item.id !== id))
   }
 
   function checkout() {
