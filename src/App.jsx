@@ -84,14 +84,12 @@ function App() {
 
   function changeQty(id, delta) {
     setCart((currentCart) =>
-      currentCart.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: Math.min(item.stock, Math.max(1, item.quantity + delta)),
-            }
-          : item
-      )
+      currentCart.flatMap((item) => {
+        if (item.id !== id) return [item]
+
+        const quantity = Math.min(item.stock, Math.max(0, item.quantity + delta))
+        return quantity === 0 ? [] : [{ ...item, quantity }]
+      })
     )
   }
 
