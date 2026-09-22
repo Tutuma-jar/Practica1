@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ProductCard from './ProductCard'
 import Cart from './Cart'
+import { getDiscountedPrice } from './pricing'
 import './App.css'
 
 const API_URL = 'https://dummyjson.com/products'
@@ -21,8 +22,9 @@ function App() {
 
     setLoading(true)
     setError('')
-    const url = search
-      ? `${API_URL}/search?q=${encodeURIComponent(search)}`
+    const normalizedSearch = search.trim()
+    const url = normalizedSearch
+      ? `${API_URL}/search?q=${encodeURIComponent(normalizedSearch)}&limit=0`
       : `${API_URL}?limit=0`
 
     fetch(url, { signal: controller.signal })
@@ -116,15 +118,14 @@ function App() {
   }
 
   const total = cart.reduce(
-    (sum, item) =>
-      sum + item.price * (1 - item.discountPercentage / 100) * item.quantity,
+    (sum, item) => sum + getDiscountedPrice(item) * item.quantity,
     0
   )
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0)
 
-  const visibleProducts = products
-    .filter((p) => category === 'all' || p.category === category)
-    .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
+  const visibleProducts = products.filter(
+    (product) => category === 'all' || product.category === category
+  )
 
   return (
     <div className="app">

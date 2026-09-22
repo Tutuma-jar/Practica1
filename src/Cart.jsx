@@ -1,3 +1,5 @@
+import { getDiscountedPrice } from './pricing'
+
 function Cart({ items, total, onQty, onRemove, onCheckout, onClose }) {
   return (
     <aside className="cart">
@@ -15,7 +17,7 @@ function Cart({ items, total, onQty, onRemove, onCheckout, onClose }) {
           <li key={item.id} className="cart-item">
             <img src={item.thumbnail} alt={item.title} width="60" />
             <span className="cart-title">{item.title}</span>
-            <span>${item.price.toFixed(2)}</span>
+            <span>${getDiscountedPrice(item).toFixed(2)}</span>
             <div className="qty">
               <button aria-label="Quitar uno" onClick={() => onQty(item.id, -1)}>
                 -

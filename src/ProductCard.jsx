@@ -1,3 +1,5 @@
+import { getDiscountedPrice } from './pricing'
+
 function ProductCard({ product, stock, onAdd }) {
   const soldOut = stock <= 0
 
@@ -5,7 +7,7 @@ function ProductCard({ product, stock, onAdd }) {
     <article className="card">
       <img src={product.thumbnail} alt={product.title} />
       <h3>{product.title}</h3>
-      <p className="price">${product.price.toFixed(2)}</p>
+      <p className="price">${getDiscountedPrice(product).toFixed(2)}</p>
       <p className="meta">
         Rating: {product.rating.toFixed(1)} · Stock: {stock}
       </p>
