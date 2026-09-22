@@ -29,7 +29,19 @@ function App() {
   }, [search])
 
   function addToCart(product) {
-    setCart((currentCart) => [...currentCart, { ...product, quantity: 1 }])
+    setCart((currentCart) => {
+      const existingItem = currentCart.find((item) => item.id === product.id)
+
+      if (existingItem) {
+        return currentCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      }
+
+      return [...currentCart, { ...product, quantity: 1 }]
+    })
   }
 
   function changeQty(id, delta) {
@@ -55,6 +67,7 @@ function App() {
     (sum, item) => sum + (item.price - item.discountPercentage) * item.quantity,
     0
   )
+  const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0)
 
   const visibleProducts = products
     .filter((p) => category === 'all' || p.category === category)
@@ -85,7 +98,7 @@ function App() {
           ))}
         </select>
         <button className="cart-btn" onClick={() => setShowCart(!showCart)}>
-          Carrito ({cart.length})
+          Carrito ({cartItemCount})
         </button>
       </header>
 
