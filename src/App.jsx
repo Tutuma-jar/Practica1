@@ -4,13 +4,14 @@ import Cart from './Cart'
 import './App.css'
 
 const API_URL = 'https://dummyjson.com/products'
-const CATEGORIES = ['beauty', 'fragrances', 'furniture', 'groceries']
+const FALLBACK_CATEGORIES = ['beauty', 'fragrances', 'furniture', 'groceries']
 
 function App() {
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState([])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
+  const [categories, setCategories] = useState(FALLBACK_CATEGORIES)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showCart, setShowCart] = useState(false)
@@ -22,7 +23,7 @@ function App() {
     setError('')
     const url = search
       ? `${API_URL}/search?q=${encodeURIComponent(search)}`
-      : `${API_URL}?limit=30`
+      : `${API_URL}?limit=0`
 
     fetch(url, { signal: controller.signal })
       .then((res) => {
@@ -44,6 +45,24 @@ function App() {
 
     return () => controller.abort()
   }, [search])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch(`${API_URL}/category-list`, { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Error HTTP ${res.status}`)
+        return res.json()
+      })
+      .then(setCategories)
+      .catch((requestError) => {
+        if (requestError.name !== 'AbortError') {
+          setCategories(FALLBACK_CATEGORIES)
+        }
+      })
+
+    return () => controller.abort()
+  }, [])
 
   function addToCart(product) {
     setCart((currentCart) => {
@@ -114,7 +133,7 @@ function App() {
           onChange={(e) => setCategory(e.target.value)}
         >
           <option value="all">Todas</option>
-          {CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
