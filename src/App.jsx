@@ -56,7 +56,7 @@ function App() {
 
   const visibleProducts = products
     .filter((p) => category === 'all' || p.category === category)
-    .filter((p) => p.title.includes(search))
+    .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div className="app">
