@@ -35,10 +35,12 @@ function App() {
       if (existingItem) {
         return currentCart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: Math.min(item.stock, item.quantity + 1) }
             : item
         )
       }
+
+      if (product.stock < 1) return currentCart
 
       return [...currentCart, { ...product, quantity: 1 }]
     })
@@ -48,7 +50,10 @@ function App() {
     setCart((currentCart) =>
       currentCart.map((item) =>
         item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          ? {
+              ...item,
+              quantity: Math.min(item.stock, Math.max(1, item.quantity + delta)),
+            }
           : item
       )
     )
@@ -110,7 +115,12 @@ function App() {
 
         <div className="grid">
           {visibleProducts.map((p) => (
-            <ProductCard key={p.id} product={p} onAdd={() => addToCart(p)} />
+            <ProductCard
+              key={p.id}
+              product={p}
+              cartQuantity={cart.find((item) => item.id === p.id)?.quantity ?? 0}
+              onAdd={() => addToCart(p)}
+            />
           ))}
         </div>
       </main>

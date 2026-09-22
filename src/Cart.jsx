@@ -21,7 +21,11 @@ function Cart({ items, total, onQty, onRemove, onCheckout, onClose }) {
                 -
               </button>
               <span>{item.quantity}</span>
-              <button aria-label="Agregar uno" onClick={() => onQty(item.id, 1)}>
+              <button
+                aria-label="Agregar uno"
+                onClick={() => onQty(item.id, 1)}
+                disabled={item.quantity >= item.stock}
+              >
                 +
               </button>
             </div>
