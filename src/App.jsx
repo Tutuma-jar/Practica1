@@ -29,8 +29,7 @@ function App() {
   }, [search])
 
   function addToCart(product) {
-    cart.push({ ...product, quantity: 1 })
-    setCart(cart)
+    setCart((currentCart) => [...currentCart, { ...product, quantity: 1 }])
   }
 
   function changeQty(id, delta) {
