@@ -64,52 +64,52 @@
 
     La actualización de cantidades ahora elimina la línea del carrito cuando la cantidad llega a cero.
 
+17. **El filtro local eliminaba resultados válidos de la API**
+
+    Se eliminó el segundo filtro por título para conservar todos los productos devueltos por la API. El selector de categoría mantiene su filtro independiente.
+
+18. **Las búsquedas amplias estaban limitadas a 30 productos**
+
+    Se agregó `limit=0` al endpoint de búsqueda para solicitar todas las coincidencias disponibles.
+
+19. **Los espacios alrededor de una búsqueda producían resultados incorrectos**
+
+    Se normaliza la consulta con `trim()` antes de enviarla. Una entrada compuesta solo por espacios se trata como una búsqueda vacía.
+
+20. **Los precios mostrados no correspondían con el total**
+
+    Se centralizó el cálculo del precio descontado y ahora las tarjetas, el carrito y el total utilizan exactamente el mismo valor.
+
 # Arreglos pendientes
 
-1. **El filtro local elimina resultados válidos de la API**
-
-   Estado: pendiente. La aplicación vuelve a filtrar los resultados exclusivamente por el título. Por ejemplo, la búsqueda `smartphones` recibe productos desde la API, pero la interfaz muestra "Sin resultados" porque esa palabra no aparece literalmente en sus títulos.
-
-2. **Las búsquedas amplias siguen limitadas a 30 productos**
-
-   Estado: pendiente. El endpoint de búsqueda no utiliza `limit=0`. Por ejemplo, la búsqueda `a` tiene 194 coincidencias, pero la API solo entrega las primeras 30.
-
-3. **Los espacios alrededor de una búsqueda producen resultados vacíos**
-
-   Estado: pendiente. No se aplica `trim()` al texto ingresado. Una búsqueda como ` Apple ` puede ser encontrada por la API, pero eliminada posteriormente por el filtro local.
-
-4. **Los precios mostrados no corresponden con el total**
-
-   Estado: pendiente. Las tarjetas y el carrito muestran el precio original, mientras que el total utiliza el precio con descuento sin explicar esa diferencia al usuario.
-
-5. **Durante una búsqueda permanecen productos anteriores en pantalla**
+1. **Durante una búsqueda permanecen productos anteriores en pantalla**
 
    Estado: pendiente. Al iniciar una petición se activa el indicador de carga, pero los resultados anteriores continúan visibles hasta que llega la nueva respuesta.
 
-6. **Se realiza una petición por cada tecla escrita**
+2. **Se realiza una petición por cada tecla escrita**
 
    Estado: pendiente. La búsqueda no tiene debounce. Aunque las peticiones anteriores se cancelan, escribir una palabra genera varias solicitudes innecesarias.
 
-7. **El carrito puede desbordarse horizontalmente en móvil**
+3. **El carrito puede desbordarse horizontalmente en móvil**
 
    Estado: pendiente. Cada producto coloca imagen, título, precio, cantidad y eliminación en una sola fila que no se adapta correctamente a pantallas estrechas.
 
-8. **El carrito no administra correctamente el foco del teclado**
+4. **El carrito no administra correctamente el foco del teclado**
 
    Estado: pendiente. El panel no funciona como diálogo, no mueve ni retiene el foco y tampoco puede cerrarse con la tecla `Escape`.
 
-9. **El carrito se pierde al recargar la página**
+5. **El carrito se pierde al recargar la página**
 
    Estado: pendiente. Los productos se almacenan únicamente en el estado de React y se eliminan al recargar la página.
 
-10. **Se cargan inmediatamente las imágenes de todo el catálogo**
+6. **Se cargan inmediatamente las imágenes de todo el catálogo**
 
     Estado: pendiente. Las imágenes no utilizan carga diferida, por lo que el navegador puede solicitar las imágenes de los 194 productos aunque todavía no sean visibles.
 
-11. **Los botones deshabilitados de stock siguen pareciendo interactivos**
+7. **Los botones deshabilitados de stock siguen pareciendo interactivos**
 
     Estado: pendiente. El botón conserva el fondo azul y `cursor: pointer` cuando alcanza el stock máximo, aunque ya no se pueda presionar.
 
-12. **Un error al cargar las categorías queda oculto**
+8. **Un error al cargar las categorías queda oculto**
 
     Estado: pendiente. Si falla el endpoint de categorías, la aplicación vuelve silenciosamente a cuatro categorías y no informa al usuario que el selector está incompleto.
