@@ -109,9 +109,9 @@ function App() {
   )
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0)
 
-  const visibleProducts = products
-    .filter((p) => category === 'all' || p.category === category)
-    .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
+  const visibleProducts = products.filter(
+    (product) => category === 'all' || product.category === category
+  )
 
   return (
     <div className="app">
