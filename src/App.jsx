@@ -12,18 +12,29 @@ function App() {
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [showCart, setShowCart] = useState(false)
 
   useEffect(() => {
     setLoading(true)
+    setError('')
     const url = search
       ? `${API_URL}/search?q=${encodeURIComponent(search)}`
       : `${API_URL}?limit=30`
 
     fetch(url)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Error HTTP ${res.status}`)
+        return res.json()
+      })
       .then((data) => {
         setProducts(data.products)
+      })
+      .catch(() => {
+        setProducts([])
+        setError('No se pudieron cargar los productos. Inténtalo de nuevo.')
+      })
+      .finally(() => {
         setLoading(false)
       })
   }, [search])
@@ -111,7 +122,9 @@ function App() {
       <main>
         {loading && <p className="loading">Cargando...</p>}
 
-        {!loading && visibleProducts.length === 0 && <p>Sin resultados.</p>}
+        {error && <p role="alert">{error}</p>}
+
+        {!loading && !error && visibleProducts.length === 0 && <p>Sin resultados.</p>}
 
         <div className="grid">
           {visibleProducts.map((p) => (
