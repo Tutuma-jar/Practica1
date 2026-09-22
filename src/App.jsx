@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ProductCard from './ProductCard'
 import Cart from './Cart'
+import { getDiscountedPrice } from './pricing'
 import './App.css'
 
 const API_URL = 'https://dummyjson.com/products'
@@ -104,8 +105,7 @@ function App() {
   }
 
   const total = cart.reduce(
-    (sum, item) =>
-      sum + item.price * (1 - item.discountPercentage / 100) * item.quantity,
+    (sum, item) => sum + getDiscountedPrice(item) * item.quantity,
     0
   )
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0)
