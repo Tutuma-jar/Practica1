@@ -5,6 +5,8 @@ import './App.css'
 
 const API_URL = 'https://dummyjson.com/products'
 const CATEGORIES = ['beauty', 'fragrances', 'furniture', 'groceries']
+const MAX_SEARCH_LENGTH = 50
+const CART_STORAGE_KEY = 'tienda-cart'
 
 function App() {
   const [products, setProducts] = useState([])
@@ -13,6 +15,25 @@ function App() {
   const [category, setCategory] = useState('all')
   const [loading, setLoading] = useState(true)
   const [showCart, setShowCart] = useState(false)
+
+  useEffect(() => {
+    try {
+      const savedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]')
+      if (Array.isArray(savedCart)) {
+        setCart(savedCart)
+      }
+    } catch (error) {
+      console.error('No se pudo cargar el carrito:', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
+    } catch (error) {
+      console.error('No se pudo guardar el carrito:', error)
+    }
+  }, [cart])
 
   useEffect(() => {
     setLoading(true)
@@ -29,19 +50,19 @@ function App() {
   }, [search])
 
   function addToCart(product) {
-    cart.push({ ...product, quantity: 1 })
-    setCart(cart)
+    setCart((currentCart) => [...currentCart, { ...product, quantity: 1 }])
   }
 
   function changeQty(index, delta) {
-    const updated = cart.map((item, i) =>
-      i === index ? { ...item, quantity: item.quantity + delta } : item
+    setCart((currentCart) =>
+      currentCart.map((item, i) =>
+        i === index ? { ...item, quantity: item.quantity + delta } : item
+      )
     )
-    setCart(updated)
   }
 
   function removeFromCart(item) {
-    setCart(cart.filter((c) => c.category !== item.category))
+    setCart((currentCart) => currentCart.filter((c) => c.category !== item.category))
   }
 
   function checkout() {
@@ -67,8 +88,9 @@ function App() {
           type="search"
           aria-label="Buscar productos"
           placeholder="Buscar..."
+          maxLength={MAX_SEARCH_LENGTH}
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value.slice(0, MAX_SEARCH_LENGTH))}
         />
         <select
           aria-label="Filtrar por categoría"

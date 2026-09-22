@@ -1,8 +1,20 @@
 {
   "name": "tienda-react",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "homepage": "https://github.com/Tutuma-jar/Practica1#readme",
+  "bugs": {
+    "url": "https://github.com/Tutuma-jar/Practica1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tutuma-jar/Practica1.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "vite.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
