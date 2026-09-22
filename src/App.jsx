@@ -22,7 +22,7 @@ function App() {
     setLoading(true)
     setError('')
     const url = search
-      ? `${API_URL}/search?q=${encodeURIComponent(search)}`
+      ? `${API_URL}/search?q=${encodeURIComponent(search)}&limit=0`
       : `${API_URL}?limit=0`
 
     fetch(url, { signal: controller.signal })
