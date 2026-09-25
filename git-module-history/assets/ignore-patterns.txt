@@ -1,0 +1,18 @@
+# Un nombre sin / coincide con cualquier componente de la ruta.
+# Un patrón con / coincide desde la raíz; se admiten comodines fnmatch.
+# Líneas vacías y comentarios se ignoran. No se admite negación !.
+.git
+node_modules
+dist
+build
+coverage
+.next
+.cache
+tmp
+vendor
+__pycache__
+.venv
+venv
+.pytest_cache
+.turbo
+docs/commit-history
