@@ -42,3 +42,22 @@ El agente analiza el historial alcanzable desde la rama actual, genera los docum
 - **`docs/commit-history/.analysis/history-data.json`**: dataset único con hechos de Git y decisiones del análisis.
 
 El análisis de un módulo produce un dashboard de alcance enfocado. La generación se considera completa cuando la validación termina correctamente.
+
+## Advertencia sobre el alcance del análisis
+
+El análisis del historial Git puede consumir una cantidad considerable de tokens, especialmente en repositorios grandes o con muchos commits.
+
+Para reducir el consumo y mantener el análisis manejable, se recomienda:
+
+- Analizar un solo módulo por ejecución.
+- Si se necesita analizar varios módulos, ejecutar la skill por separado para cada uno.
+- Especificar un rango de tiempo cuando el historial sea muy extenso, por ejemplo, los últimos 3 meses, 6 meses o desde una fecha determinada.
+- Evitar analizar todo el repositorio y todo su historial salvo que sea realmente necesario.
+
+Ejemplo recomendado:
+
+```text
+Usa git-module-history para analizar la evolución del módulo Teams durante los últimas 2 semanas.
+```
+
+Limitar el análisis por módulo o período reduce significativamente la cantidad de commits que deben interpretarse y, por tanto, el consumo de tokens.
