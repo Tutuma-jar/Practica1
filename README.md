@@ -1,3 +1,5 @@
+# Las pruebas se encuentran en docs/commit-history, contiene los archivos resultantes del uso del skill en un proyecto de la Materia de Ing de Software.
+
 # Git Module History
 
 Skill para analizar cómo evolucionan los módulos y funcionalidades de un repositorio Git. Relaciona y agrupa commits, interpreta cambios relevantes y genera documentación por módulo y un dashboard general en `docs/commit-history/`. Incluye validación de la documentación y sus estadísticas.
